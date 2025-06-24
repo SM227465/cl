@@ -19,7 +19,7 @@ app.use(
   helmet.contentSecurityPolicy({
     directives: {
       defaultSrc: ["'self'"],
-      connectSrc: ["'self'", 'https://blog-rdlk.onrender.com'],
+      connectSrc: ["'self'", 'https://car-list-863m.onrender.com'],
     },
   })
 );

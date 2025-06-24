@@ -1,7 +1,7 @@
 import cron from 'node-cron';
 import logger from '../utils/logger.util';
 
-const rootApi = 'https://blog-rdlk.onrender.com';
+const rootApi = 'https://car-list-863m.onrender.com';
 
 export const startCornJobs = () => {
   cron.schedule('*/14 * * * *', async () => {
