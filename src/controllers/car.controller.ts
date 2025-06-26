@@ -42,6 +42,7 @@ export const createCar = catchAsync(async (req, res) => {
     maxSpeed,
     bodyType,
     trimType,
+    addedBy: req.user!._id,
   });
 
   res.status(201).json({

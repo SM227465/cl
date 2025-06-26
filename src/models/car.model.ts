@@ -1,4 +1,4 @@
-import { Document, model, Schema } from 'mongoose';
+import { Document, model, Schema, Types } from 'mongoose';
 
 export interface ICar extends Document {
   productId: string;
@@ -19,9 +19,9 @@ export interface ICar extends Document {
   maxSpeed: string;
   bodyType: string;
   trimType: string;
+  addedBy: Types.ObjectId;
 }
 
-// Blog schema
 const carSchema = new Schema<ICar>(
   {
     productId: {
@@ -97,6 +97,11 @@ const carSchema = new Schema<ICar>(
     trimType: {
       type: String,
       required: [true, 'Trim type is required'],
+    },
+    addedBy: {
+      type: Schema.Types.ObjectId,
+      ref: 'User',
+      required: [true, 'Car must have a creator'],
     },
   },
   {

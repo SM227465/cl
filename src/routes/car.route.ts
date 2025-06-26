@@ -74,7 +74,7 @@ const router = express.Router();
 
 /**
  * @swagger
- * /cars:
+ * /api/v1/cars:
  *   get:
  *     summary: Get a paginated list of cars
  *     description: Retrieves a paginated, sorted list of cars from the database.
@@ -142,8 +142,165 @@ const router = express.Router();
  */
 router.get('/', getCars);
 
+/**
+ * @swagger
+ * /api/v1/cars:
+ *   post:
+ *     summary: Create a new car
+ *     tags:
+ *       - Cars
+ *     security:
+ *       - BearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - brand
+ *               - carModel
+ *               - year
+ *               - price
+ *               - status
+ *               - odo
+ *               - vin
+ *               - registrationNumber
+ *               - fuelType
+ *               - cc
+ *               - cylinders
+ *               - transmissionType
+ *               - maxSpeed
+ *               - bodyType
+ *               - trimType
+ *               - image
+ *             properties:
+ *               brand:
+ *                 type: string
+ *                 example: "Toyota"
+ *               carModel:
+ *                 type: string
+ *                 example: "Corolla"
+ *               year:
+ *                 type: integer
+ *                 example: 2020
+ *               price:
+ *                 type: number
+ *                 example: 15000
+ *               status:
+ *                 type: string
+ *                 example: "available"
+ *               odo:
+ *                 type: number
+ *                 example: 45000
+ *               vin:
+ *                 type: string
+ *                 example: "1HGCM82633A004352"
+ *               registrationNumber:
+ *                 type: string
+ *                 example: "MH12AB1234"
+ *               fuelType:
+ *                 type: string
+ *                 example: "Petrol"
+ *               cc:
+ *                 type: integer
+ *                 example: 1500
+ *               cylinders:
+ *                 type: integer
+ *                 example: 4
+ *               transmissionType:
+ *                 type: string
+ *                 example: "Automatic"
+ *               maxSpeed:
+ *                 type: number
+ *                 example: 180
+ *               bodyType:
+ *                 type: string
+ *                 example: "Sedan"
+ *               trimType:
+ *                 type: string
+ *                 example: "GLX"
+ *               image:
+ *                 type: string
+ *                 format: uri
+ *                 example: "https://example.com/car-image.jpg"
+ *     responses:
+ *       201:
+ *         description: Car created successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 message:
+ *                   type: string
+ *                   example: Car created successfully
+ *                 data:
+ *                   $ref: '#/components/schemas/Car'
+ *       401:
+ *         description: Unauthorized
+ *       500:
+ *         description: Internal server error
+ */
 router.post('/', protect, createCar);
 
+/**
+ * @swagger
+ * /api/v1/cars/{id}:
+ *   get:
+ *     summary: Get car details by ID (with external data)
+ *     tags:
+ *       - Cars
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: The ID of the car to retrieve
+ *     responses:
+ *       200:
+ *         description: Successfully fetched car data (from external API)
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 data:
+ *                   type: object
+ *                   description: Car details returned by the external API
+ *                   example:
+ *                     name: "2020 Toyota Corolla GLX"
+ *                     price: 15000
+ *                     specifications:
+ *                       engine: "1500cc"
+ *                       transmission: "Automatic"
+ *                       fuelType: "Petrol"
+ *
+ *       404:
+ *         description: Car not found in database
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 message:
+ *                   type: string
+ *                   example: Car not found
+ *       502:
+ *         description: Failed to fetch external car data
+ *       503:
+ *         description: External API error
+ */
 router.get('/:id', getCar);
 
 export default router;

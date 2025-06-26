@@ -1,7 +1,11 @@
 import path from 'path';
+import dotenv from 'dotenv';
 import swaggerJsdoc, { Options } from 'swagger-jsdoc';
+dotenv.config();
 
 const isDevelopment = process.env.NODE_ENV === 'development';
+
+const routesPath = path.resolve(__dirname, `../routes/*.${isDevelopment ? 'ts' : 'js'}`);
 
 const options: Options = {
   definition: {
@@ -36,7 +40,7 @@ const options: Options = {
       },
     ],
   },
-  apis: [path.join(__dirname, `../routes/*.${isDevelopment ? 'ts' : 'js'}`)],
+  apis: [routesPath],
 };
 
 export const swaggerSpec = swaggerJsdoc(options);
